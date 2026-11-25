@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f8ff">
+<title>English Kids — Learn & Play</title>
+<style>
+:root{--ink:#20304d;--muted:#64748b;--blue:#4c8fd0;--sky:#eaf4ff;--mint:#e8f8ef;--yellow:#fff2cf;--pink:#fff0f1;--purple:#f1edff;--paper:#fff;--line:#e4eaf2;--shadow:0 12px 32px #2d4a7010}
+*{box-sizing:border-box}body{margin:0;background:#f6f8fc;color:var(--ink);font-family:Inter,ui-rounded,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
+.topbar{position:sticky;top:0;z-index:5;background:#ffffffeb;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{max-width:1180px;margin:auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#75b8f0,#9b8bea);display:grid;place-items:center;color:white;font-size:23px;box-shadow:var(--shadow)}
+.navright{display:flex;gap:9px;align-items:center}.pill{border:1px solid var(--line);background:white;padding:9px 13px;border-radius:999px;color:var(--ink);font-weight:700}
+.container{max-width:1180px;margin:auto;padding:26px 22px 60px}.hero{background:linear-gradient(115deg,#e6f3ff,#f0edff 58%,#fff3d8);border:1px solid #e4eafa;border-radius:30px;padding:34px;display:grid;grid-template-columns:1.3fr .7fr;gap:20px;align-items:center;overflow:hidden}
+.eyebrow{color:#4d83ba;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.hero h1{font-size:clamp(34px,5vw,56px);line-height:1.04;margin:10px 0 14px;letter-spacing:-.04em}.hero p{color:#566780;font-size:18px;max-width:620px;line-height:1.6}.heroart{font-size:clamp(100px,16vw,180px);text-align:center;filter:drop-shadow(0 14px 10px #617e9b22)}
+.btn{background:var(--blue);color:white;border-radius:14px;padding:12px 18px;font-weight:850;box-shadow:0 7px 18px #4c8fd033}.btn.secondary{background:white;color:var(--ink);border:1px solid var(--line);box-shadow:none}.btn.small{padding:9px 12px;font-size:13px}
+.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:15px;margin:32px 0 15px}.sectionhead h2{margin:0;font-size:25px}.muted{color:var(--muted)}
+.grades{display:grid;grid-template-columns:repeat(5,1fr);gap:13px}.grade{border:1px solid var(--line);border-radius:22px;padding:18px;background:white;text-align:left;box-shadow:var(--shadow);transition:.2s}.grade:hover{transform:translateY(-3px)}.grade .num{font-size:34px;font-weight:950}.grade .label{font-weight:850}.grade small{color:var(--muted)}.grade:nth-child(1){background:#edf6ff}.grade:nth-child(2){background:#edfaf2}.grade:nth-child(3){background:#fff7e5}.grade:nth-child(4){background:#f3efff}.grade:nth-child(5){background:#fff0f2}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.tile,.lesson,.panel{background:white;border:1px solid var(--line);border-radius:22px;padding:19px;box-shadow:var(--shadow)}.tile .emoji{font-size:29px}.tile h3{margin:8px 0 5px}.tile p{margin:0;color:var(--muted);line-height:1.5;font-size:14px}
+.lessonlist{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.lesson{display:flex;align-items:center;gap:14px;text-align:left;color:inherit}.lessonicon{width:52px;height:52px;border-radius:16px;background:var(--sky);display:grid;place-items:center;font-size:25px;flex-shrink:0}.lesson strong{display:block}.lesson small{color:var(--muted)}
+.progress{height:8px;background:#edf1f6;border-radius:20px;overflow:hidden;margin-top:12px}.progress span{display:block;height:100%;background:linear-gradient(90deg,#62b4e8,#8d83e9);border-radius:20px}
+.view{display:none}.view.active{display:block}.back{margin:4px 0 18px}.tag{display:inline-block;background:var(--mint);color:#287653;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:850}
+.wordgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.word{padding:16px;background:#fff;border:1px solid var(--line);border-radius:18px;text-align:center}.word .pic{font-size:36px}.word b{display:block;margin:6px 0}.word small{color:var(--muted)}
+.exercise{background:white;border:1px solid var(--line);border-radius:22px;padding:22px;margin:14px 0}.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}.answer{padding:13px;border:1px solid var(--line);border-radius:13px;background:#f9fbfe;text-align:left;font-weight:700}.answer:hover{border-color:var(--blue);background:var(--sky)}.feedback{font-weight:800;margin-top:12px;min-height:24px}.good{color:#168653}.bad{color:#c34d57}
+input,textarea,select{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:white;color:var(--ink)}label{font-size:13px;font-weight:800;display:block;margin:12px 0 6px}
+footer{text-align:center;color:#8a97a8;font-size:12px;padding:25px}
+.modal{position:fixed;inset:0;background:#18243c88;z-index:10;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modalbox{background:white;border-radius:24px;padding:25px;max-width:440px;width:100%;box-shadow:0 25px 80px #0003}.modalbox h2{margin-top:0}.notice{font-size:12px;color:#78869a;line-height:1.5;margin-top:14px}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.heroart{display:none}.grades{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.container{padding:16px 14px 45px}.nav{padding:11px 14px}.brand{font-size:18px}.navright .pill{display:none}.hero{padding:24px;border-radius:23px}.grades{grid-template-columns:repeat(2,1fr)}.grid,.lessonlist,.wordgrid{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.sectionhead h2{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="nav">
+  <div class="brand"><div class="logo">✦</div> English Kids</div>
+  <div class="navright"><span class="pill" id="studentBadge">Гість</span><button class="btn small" id="loginBtn">Увійти / Реєстрація</button><button class="pill" id="teacherBtn" style="display:none">Кабінет учителя</button></div>
+</div></div>
+<main class="container">
+<section id="home" class="view active">
+  <div class="hero">
+    <div><div class="eyebrow">Learn • Play • Grow</div><h1>Вивчай англійську<br>легко та весело! 🌈</h1>
+      <p>Інтерактивні уроки, яскраві слова, ігри та маленькі перемоги щодня. Обери свій клас і починай навчання!</p>
+      <button class="btn" onclick="document.getElementById('gradesTitle').scrollIntoView({behavior:'smooth'})">Обрати клас →</button>
+    </div><div class="heroart">📚🦊🎈</div>
+  </div>
+  <div class="sectionhead" id="gradesTitle"><div><div class="eyebrow">Твій рівень</div><h2>Обери свій клас</h2></div><span class="muted">1–5 клас</span></div>
+  <div class="grades" id="grades"></div>
+  <div class="sectionhead"><div><div class="eyebrow">Навчайся по-своєму</div><h2>Що будемо робити?</h2></div></div>
+  <div class="grid">
+    <div class="tile"><div class="emoji">🧩</div><h3>Ігри та вправи</h3><p>Match, quiz, True or False та складання речень.</p></div>
+    <div class="tile"><div class="emoji">🔊</div><h3>Слухай і повторюй</h3><p>Прослуховуй англійські слова за допомогою озвучення пристрою.</p></div>
+    <div class="tile"><div class="emoji">⭐</div><h3>Твій прогрес</h3><p>Збирай зірочки та повертайся до вже вивчених слів.</p></div>
+  </div>
+</section>
+
+<section id="gradeView" class="view">
+  <button class="btn secondary small back" onclick="show('home')">← На головну</button>
+  <div class="eyebrow" id="gradeEyebrow">КЛАС</div><h1 id="gradeTitle">3 клас</h1><p class="muted" id="gradeDesc"></p>
+  <div class="sectionhead"><h2>Теми та уроки</h2><span class="tag">Навчайся у своєму темпі</span></div>
+  <div class="lessonlist" id="lessons"></div>
+</section>
+
+<section id="lessonView" class="view">
+  <button class="btn secondary small back" onclick="show('gradeView')">← До уроків</button>
+  <div class="eyebrow" id="lessonGrade"></div><h1 id="lessonTitle"></h1><p class="muted" id="lessonIntro"></p>
+  <div class="sectionhead"><h2>Слова уроку</h2><span class="tag">Listen & repeat</span></div>
+  <div class="wordgrid" id="words"></div>
+  <div class="sectionhead"><h2>Перевір себе</h2><span class="tag">Mini quiz</span></div>
+  <div id="quiz"></div>
+  <div class="panel"><h3>⭐ Молодець!</h3><p class="muted">Заверши вправи, щоб зберегти результат.</p><button class="btn" id="finishLesson">Завершити урок</button><span id="finishMsg" class="feedback"></span></div>
+</section>
+
+<section id="teacherView" class="view">
+  <button class="btn secondary small back" onclick="show('home')">← На головну</button>
+  <div class="eyebrow">TEACHER SPACE</div><h1>Кабінет учителя</h1>
+  <p class="muted">Демо-панель для керування матеріалами на цьому пристрої.</p>
+  <div class="panel">
+    <h3>Додати власний урок</h3>
+    <label>Клас</label><select id="newGrade"><option value="1">1 клас</option><option value="2">2 клас</option><option value="3" selected>3 клас</option><option value="4">4 клас</option><option value="5">5 клас</option></select>
+    <label>Назва уроку</label><input id="newTitle" placeholder="Наприклад: My Family">
+    <label>Короткий опис</label><input id="newDesc" placeholder="Що вивчатимемо?">
+    <label>Слова (по одному на рядок: English — переклад)</label><textarea id="newWords" rows="4" placeholder="mother — мама&#10;father — тато"></textarea>
+    <button class="btn" id="addLesson">Додати урок</button><span id="teacherMsg" class="feedback"></span>
+  </div>
+  <div class="panel" style="margin-top:14px"><h3>Доступ учнів</h3><p>Учні реєструються з персональним кодом, який створює вчитель у захищеній базі.</p><p class="notice">Керування кодами запрошень буде додано в наступному етапі підключення бази уроків.</p></div>
+</section>
+</main>
+<footer>English Kids · Навчання з цікавістю 💙<br><span id="connectionStatus">Підключення до захищеного кабінету…</span></footer>
+
+<div class="modal" id="loginModal"><div class="modalbox">
+  <h2>Вхід до English Kids 👋</h2>
+  <p class="muted">Учитель входить за email і паролем. Учень — лише за ім’ям та кодом свого класу.</p>
+  <h3>Для вчителя</h3>
+  <label>Email</label><input id="authEmail" type="email" autocomplete="username" placeholder="Email учителя">
+  <label>Пароль</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="Пароль учителя">
+  <h3 style="margin-top:20px">Для учня</h3>
+  <div id="studentSignupFields">
+    <label>Ім’я та прізвище учня</label><input id="authFullName" placeholder="Ім’я учня">
+    <label>Код класу від учителя</label><input id="authInviteCode" placeholder="Введіть код запрошення">
+  </div>
+  <div style="display:flex;gap:9px;margin-top:16px;flex-wrap:wrap">
+    <button class="btn" id="authSignIn">Увійти як учитель</button>
+    <button class="btn secondary" id="authSignUp">Увійти як учень</button>
+    <button class="btn secondary" id="cancelLogin">Закрити</button>
+  </div>
+  <p id="authMessage" class="notice" aria-live="polite">Учнівський доступ створюється без email і пароля. Він зберігається на цьому пристрої.</p>
+</div></div>
+<script>
+const curriculum = {
+1:{desc:"Перші кроки: літери, кольори, цифри та прості слова.",lessons:[
+["Alphabet & Greetings","Вивчаємо літери та привітання.",[["hello","привіт","👋"],["goodbye","до побачення","😊"],["please","будь ласка","🙏"],["thank you","дякую","💛"]]],
+["Colours","Назви основні кольори.",[["red","червоний","🔴"],["blue","синій","🔵"],["yellow","жовтий","🟡"],["green","зелений","🟢"]]],
+["Numbers 1–10","Рахуємо англійською.",[["one","один","1️⃣"],["two","два","2️⃣"],["three","три","3️⃣"],["four","чотири","4️⃣"]]],
+["Animals","Знайомимося з тваринами.",[["cat","кіт","🐱"],["dog","собака","🐶"],["bird","птах","🐦"],["fish","риба","🐠"]]]]},
+2:{desc:"Розширюємо словник і вчимося будувати прості речення.",lessons:[
+["My Family","Слова про родину.",[["mother","мама","👩"],["father","тато","👨"],["sister","сестра","👧"],["brother","брат","👦"]]],
+["Food & Drinks","Їжа та напої.",[["apple","яблуко","🍎"],["bread","хліб","🍞"],["milk","молоко","🥛"],["water","вода","💧"]]],
+["Have got / Has got","Говоримо про те, що маємо.",[["I have got","у мене є","🎒"],["you have got","у тебе є","📘"],["he has got","у нього є","⚽"],["she has got","у неї є","🧸"]]],
+["My Home","Кімнати та предмети.",[["house","будинок","🏠"],["kitchen","кухня","🍽️"],["bedroom","спальня","🛏️"],["garden","сад","🌳"]]]]},
+3:{desc:"Закріплюємо базову граматику та вчимося говорити про щоденне життя.",lessons:[
+["Daily Routine","Розповідаємо про свій день.",[["wake up","прокидатися","⏰"],["brush my teeth","чистити зуби","🪥"],["get dressed","одягатися","👕"],["have breakfast","снідати","🥣"],["go to school","йти до школи","🎒"],["do my homework","робити домашнє завдання","✏️"],["play with friends","гратися з друзями","⚽"],["go to bed","лягати спати","🌙"]]],
+["Have got / Has got","Повторюємо have got та has got.",[["I have got a dog","у мене є собака","🐶"],["She has got a cat","у неї є кіт","🐱"],["Have you got…?","У тебе є…?","❓"],["Has he got…?","У нього є…?","❓"]]],
+["Comparative Adjectives","Порівнюємо предмети та тварин.",[["tall — taller","високий — вищий","🦒"],["big — bigger","великий — більший","🐘"],["short — shorter","низький — нижчий","🐭"],["fast — faster","швидкий — швидший","🐆"]]],
+["Nature","Слова про природу.",[["waterfall","водоспад","🏞️"],["ocean","океан","🌊"],["lake","озеро","🏞️"],["deep","глибокий","⬇️"],["wide","широкий","↔️"]]]]},
+4:{desc:"Будуємо довші речення та говоримо про події навколо нас.",lessons:[
+["Daily Activities","Щоденні справи та вільний час.",[["usually","зазвичай","🔁"],["sometimes","іноді","🌤️"],["always","завжди","⭐"],["never","ніколи","🚫"]]],
+["Present Continuous","Що відбувається зараз?",[["I am reading","я читаю зараз","📖"],["she is playing","вона грається","⚽"],["they are running","вони біжать","🏃"],["he is eating","він їсть","🍎"]]],
+["There is / There are","Описуємо кімнату та місця.",[["There is","є (однина)","🪑"],["There are","є (множина)","🪑🪑"],["a table","стіл","🪵"],["a window","вікно","🪟"]]],
+["Weather","Погода та пори року.",[["sunny","сонячно","☀️"],["cloudy","хмарно","☁️"],["rainy","дощово","🌧️"],["windy","вітряно","💨"]]]]},
+5:{desc:"Розвиваємо читання, письмо та впевнене спілкування.",lessons:[
+["Past Simple","Говоримо про минуле.",[["yesterday","вчора","📅"],["visited","відвідав/ла","🚶"],["played","грав/ла","⚽"],["watched","дивився/лася","📺"]]],
+["Future Plans","Плани на майбутнє.",[["tomorrow","завтра","🌅"],["I will…","я буду…","✨"],["旅行","подорож","🧳"],["learn","вивчати","📚"]]],
+["Countable & Uncountable","Злічувані та незлічувані іменники.",[["an apple","яблуко","🍎"],["some water","трохи води","💧"],["many books","багато книжок","📚"],["much milk","багато молока","🥛"]]],
+["Reading Time","Читаємо та розуміємо короткі тексти.",[["story","історія","📖"],["character","персонаж","🦊"],["beginning","початок","🌱"],["ending","кінець","🏁"]]]]}
+};
+let currentGrade=3,currentLesson=null,correctCount=0,quizCount=0;
+let user=JSON.parse(localStorage.getItem("ek_user")||"null");
+let progress=JSON.parse(localStorage.getItem("ek_progress")||"{}");
+let custom=JSON.parse(localStorage.getItem("ek_custom")||"[]");
+function show(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});}
+function updateUser(){document.getElementById("studentBadge").textContent=user?("👋 "+user.name):"Гість";document.getElementById("loginBtn").textContent=user?"Змінити учня":"Вхід учня";}
+function renderGrades(){let el=document.getElementById("grades");el.innerHTML="";for(let n=1;n<=5;n++){let done=Object.keys(progress).filter(k=>k.startsWith(n+"-")).length;let b=document.createElement("button");b.className="grade";b.innerHTML=`<div class="num">${n}</div><div class="label">КЛАС</div><small>${curriculum[n].lessons.length} теми · ${done} завершено</small><div class="progress"><span style="width:${done/curriculum[n].lessons.length*100}%"></span></div>`;b.onclick=()=>openGrade(n);el.appendChild(b);}}
+function openGrade(n){currentGrade=n;document.getElementById("gradeEyebrow").textContent=n+" КЛАС";document.getElementById("gradeTitle").textContent=n+" клас";document.getElementById("gradeDesc").textContent=curriculum[n].desc;let list=document.getElementById("lessons");list.innerHTML="";let all=[...curriculum[n].lessons,...custom.filter(x=>x.grade===n).map(x=>[x.title,x.desc,x.words])];all.forEach((l,i)=>{let key=n+"-"+i;let done=progress[key];let b=document.createElement("button");b.className="lesson";b.innerHTML=`<div class="lessonicon">${["📘","🧩","🌈","🦊"][i%4]}</div><div style="flex:1"><strong>${l[0]}</strong><small>${l[1]}</small></div><span>${done?"⭐":"→"}</span>`;b.onclick=()=>openLesson(n,i,l);list.appendChild(b)});show("gradeView");}
+function openLesson(n,i,l){currentGrade=n;currentLesson={key:n+"-"+i,data:l};correctCount=0;quizCount=0;document.getElementById("lessonGrade").textContent=n+" КЛАС";document.getElementById("lessonTitle").textContent=l[0];document.getElementById("lessonIntro").textContent=l[1];let words=document.getElementById("words");words.innerHTML="";l[2].forEach(w=>{let d=document.createElement("div");d.className="word";d.innerHTML=`<div class="pic">${w[2]||"💡"}</div><b>${w[0]}</b><small>${w[1]}</small><br><button class="btn secondary small" style="margin-top:9px" onclick="speak(${JSON.stringify(w[0])})">🔊 Слухати</button>`;words.appendChild(d)});makeQuiz(l);document.getElementById("finishMsg").textContent="";show("lessonView");}
+function speak(t){if("speechSynthesis" in window){let u=new SpeechSynthesisUtterance(t);u.lang="en-US";speechSynthesis.speak(u)}else alert("Озвучення не підтримується цим браузером.");}
+function makeQuiz(l){let box=document.getElementById("quiz");box.innerHTML="";let words=l[2];words.slice(0,Math.min(4,words.length)).forEach((w,i)=>{let options=[w[1],...words.filter((_,j)=>j!==i).slice(0,3).map(x=>x[1])].sort(()=>Math.random()-.5);let ex=document.createElement("div");ex.className="exercise";ex.innerHTML=`<b>${i+1}. Що означає “${w[0]}”?</b><div class="answers"></div><div class="feedback"></div>`;let ans=ex.querySelector(".answers"),fb=ex.querySelector(".feedback");options.forEach(o=>{let btn=document.createElement("button");btn.className="answer";btn.textContent=o;btn.onclick=()=>{if(btn.disabled)return;[...ans.children].forEach(x=>x.disabled=true);quizCount++;if(o===w[1]){correctCount++;fb.textContent="Правильно! Молодець! ⭐";fb.className="feedback good"}else{fb.textContent="Спробуй ще раз наступного разу. Правильна відповідь: "+w[1];fb.className="feedback bad"}};ans.appendChild(btn)});box.appendChild(ex)});}
+document.getElementById("finishLesson").onclick=()=>{if(!user){document.getElementById("finishMsg").textContent="Спочатку увійди за кодом-запрошення.";document.getElementById("finishMsg").className="feedback bad";return}if(quizCount<Math.min(4,currentLesson.data[2].length)){document.getElementById("finishMsg").textContent="Відповідай на всі запитання тесту.";document.getElementById("finishMsg").className="feedback bad";return}progress[currentLesson.key]={score:correctCount,total:quizCount,date:new Date().toISOString()};localStorage.setItem("ek_progress",JSON.stringify(progress));document.getElementById("finishMsg").textContent=`Збережено! Твій результат: ${correctCount}/${quizCount} ⭐`;document.getElementById("finishMsg").className="feedback good";renderGrades();};
+window.setEnglishKidsUser=(u)=>{user=u;updateUser();};
+document.getElementById("cancelLogin").onclick=()=>document.getElementById("loginModal").classList.remove("show");
+document.getElementById("teacherBtn").onclick=()=>show("teacherView");
+document.getElementById("addLesson").onclick=()=>{let grade=+document.getElementById("newGrade").value,title=document.getElementById("newTitle").value.trim(),desc=document.getElementById("newDesc").value.trim(),raw=document.getElementById("newWords").value.trim();if(!title||!raw){document.getElementById("teacherMsg").textContent="Додай назву та хоча б одне слово.";return}let words=raw.split("\n").map(line=>{let parts=line.split("—");return[(parts[0]||"").trim(),(parts[1]||"").trim(),"💡"]}).filter(x=>x[0]&&x[1]);custom.push({grade,title,desc,words});localStorage.setItem("ek_custom",JSON.stringify(custom));document.getElementById("teacherMsg").textContent="Урок додано на цьому пристрої!";document.getElementById("newTitle").value="";document.getElementById("newDesc").value="";document.getElementById("newWords").value="";};
+updateUser();renderGrades();
+</script>
+<script type="module" src="./auth.js"></script>
+</body></html>

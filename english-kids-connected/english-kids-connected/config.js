@@ -1,0 +1,5 @@
+// Заповніть значення з Supabase → Project Settings → API Keys.
+// Тут дозволено використовувати лише Project URL та publishable (sb_publishable_...) ключ.
+// НІКОЛИ не вставляйте service_role / secret key у браузерний код.
+export const SUPABASE_URL = "https://bgthzsbtraepgqydtghm.supabase.co";
+export const SUPABASE_PUBLISHABLE_KEY = "ВСТАВТЕ_PUBLISHABLE_KEY";
