@@ -26,6 +26,27 @@ button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
 input,textarea,select{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:white;color:var(--ink)}label{font-size:13px;font-weight:800;display:block;margin:12px 0 6px}
 footer{text-align:center;color:#8a97a8;font-size:12px;padding:25px}
 .modal{position:fixed;inset:0;background:#18243c88;z-index:10;display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modalbox{background:white;border-radius:24px;padding:25px;max-width:440px;width:100%;box-shadow:0 25px 80px #0003}.modalbox h2{margin-top:0}.notice{font-size:12px;color:#78869a;line-height:1.5;margin-top:14px}
+
+.teacher-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.teacher-tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 0 16px;margin:12px 0}
+.teacher-tab{white-space:nowrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-weight:800;color:var(--ink)}
+.teacher-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.teacher-pane{display:none}.teacher-pane.active{display:block}
+.teacher-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.teacher-stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:5px}
+.teacher-stat b{font-size:30px;color:var(--blue)}.teacher-stat span{font-size:13px;color:var(--muted);font-weight:700}
+.quick-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+.list-heading{margin:24px 0 12px}.managed-list{display:grid;gap:10px}
+.managed-item{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+.managed-item h4{margin:0 0 4px}.managed-item p{margin:0;color:var(--muted);font-size:13px;white-space:pre-wrap}
+.managed-actions{display:flex;gap:7px;flex-wrap:wrap;flex-shrink:0}
+.managed-actions button{padding:8px 10px;border-radius:10px;background:#edf4fc;color:var(--ink);font-weight:750}
+.managed-actions .danger{background:#fff0f0;color:#b42318}
+.empty-state{background:#fff;border:1px dashed #cbd5e1;border-radius:16px;padding:20px;color:var(--muted);text-align:center}
+.presentation-preview{max-width:760px}.preview-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.preview-slide{min-height:300px;background:linear-gradient(135deg,#eaf4ff,#f4efff,#fff5dc);border-radius:20px;padding:35px;display:flex;flex-direction:column;justify-content:center;white-space:pre-wrap;font-size:clamp(22px,4vw,34px);font-weight:800;line-height:1.45}
+@media(max-width:650px){.teacher-stats{grid-template-columns:repeat(2,1fr)}.managed-item{align-items:flex-start;flex-direction:column}.managed-actions{width:100%}.managed-actions button{flex:1}}
+
 @media(max-width:850px){.hero{grid-template-columns:1fr}.heroart{display:none}.grades{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.container{padding:16px 14px 45px}.nav{padding:11px 14px}.brand{font-size:18px}.navright .pill{display:none}.hero{padding:24px;border-radius:23px}.grades{grid-template-columns:repeat(2,1fr)}.grid,.lessonlist,.wordgrid{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.sectionhead h2{font-size:21px}}
 </style>
@@ -70,20 +91,87 @@ footer{text-align:center;color:#8a97a8;font-size:12px;padding:25px}
   <div class="panel"><h3>⭐ Молодець!</h3><p class="muted">Заверши вправи, щоб зберегти результат.</p><button class="btn" id="finishLesson">Завершити урок</button><span id="finishMsg" class="feedback"></span></div>
 </section>
 
+
 <section id="teacherView" class="view">
   <button class="btn secondary small back" onclick="show('home')">← На головну</button>
-  <div class="eyebrow">TEACHER SPACE</div><h1>Кабінет учителя</h1>
-  <p class="muted">Демо-панель для керування матеріалами на цьому пристрої.</p>
-  <div class="panel">
-    <h3>Додати власний урок</h3>
-    <label>Клас</label><select id="newGrade"><option value="1">1 клас</option><option value="2">2 клас</option><option value="3" selected>3 клас</option><option value="4">4 клас</option><option value="5">5 клас</option></select>
-    <label>Назва уроку</label><input id="newTitle" placeholder="Наприклад: My Family">
-    <label>Короткий опис</label><input id="newDesc" placeholder="Що вивчатимемо?">
-    <label>Слова (по одному на рядок: English — переклад)</label><textarea id="newWords" rows="4" placeholder="mother — мама&#10;father — тато"></textarea>
-    <button class="btn" id="addLesson">Додати урок</button><span id="teacherMsg" class="feedback"></span>
+  <div class="teacher-heading"><div><div class="eyebrow">TEACHER SPACE</div><h1>Кабінет учителя</h1><p class="muted">Твої уроки, презентації та планування в одному місці.</p></div><span class="tag">Особистий кабінет</span></div>
+  <div class="teacher-tabs">
+    <button class="teacher-tab active" data-tab="dashboard">Огляд</button>
+    <button class="teacher-tab" data-tab="lessons">Мої уроки</button>
+    <button class="teacher-tab" data-tab="presentations">Презентації</button>
+    <button class="teacher-tab" data-tab="schedule">Календар і розклад</button>
+    <button class="teacher-tab" data-tab="materials">Матеріали</button>
   </div>
-  <div class="panel" style="margin-top:14px"><h3>Доступ учнів</h3><p>Учні реєструються з персональним кодом, який створює вчитель у захищеній базі.</p><p class="notice">Керування кодами запрошень буде додано в наступному етапі підключення бази уроків.</p></div>
+  <section class="teacher-pane active" id="teacher-dashboard">
+    <h2>Моя робоча панель</h2>
+    <div class="teacher-stats">
+      <div class="teacher-stat"><b id="statLessons">0</b><span>Мої уроки</span></div>
+      <div class="teacher-stat"><b id="statPresentations">0</b><span>Презентації</span></div>
+      <div class="teacher-stat"><b id="statEvents">0</b><span>Заплановані уроки</span></div>
+      <div class="teacher-stat"><b id="statMaterials">0</b><span>Матеріали</span></div>
+    </div>
+    <div class="panel"><h3>Швидкий старт</h3><div class="quick-actions">
+      <button class="btn" data-goto="lessons">＋ Додати урок</button>
+      <button class="btn secondary" data-goto="presentations">✦ Створити презентацію</button>
+      <button class="btn secondary" data-goto="schedule">▦ Запланувати заняття</button>
+    </div></div>
+    <p class="notice">Поки що це персональний кабінет одного вчителя. Дані зберігаються в локальному сховищі цього браузера. Для доступу з інших пристроїв наступним кроком підключимо таблиці Supabase.</p>
+  </section>
+  <section class="teacher-pane" id="teacher-lessons">
+    <div class="sectionhead"><div><h2>Мої уроки</h2><p class="muted">Переглядай, редагуй або видаляй створені уроки.</p></div></div>
+    <div class="panel">
+      <h3 id="lessonFormHeading">Додати власний урок</h3>
+      <input type="hidden" id="editingLessonId">
+      <label>Клас</label><select id="newGrade"><option value="1">1 клас</option><option value="2">2 клас</option><option value="3" selected>3 клас</option><option value="4">4 клас</option><option value="5">5 клас</option></select>
+      <label>Назва уроку</label><input id="newTitle" placeholder="Наприклад: My Family">
+      <label>Короткий опис</label><input id="newDesc" placeholder="Що вивчатимемо?">
+      <label>Слова (кожне з нового рядка: English — переклад)</label><textarea id="newWords" rows="5" placeholder="mother — мама&#10;father — тато"></textarea>
+      <div class="quick-actions"><button class="btn" id="addLesson">Зберегти урок</button><button class="btn secondary" id="cancelLessonEdit" style="display:none">Скасувати редагування</button></div>
+      <span id="teacherMsg" class="feedback" aria-live="polite"></span>
+    </div>
+    <h3 class="list-heading">Створені уроки</h3><div id="teacherLessonList" class="managed-list"></div>
+  </section>
+  <section class="teacher-pane" id="teacher-presentations">
+    <h2>Конструктор презентацій</h2><p class="muted">Створи презентацію з окремих слайдів. Розділяй слайди трьома дефісами ---</p>
+    <div class="panel">
+      <input type="hidden" id="editingPresentationId">
+      <label>Назва презентації</label><input id="presentationTitle" placeholder="Наприклад: Colours">
+      <label>Для якого класу</label><select id="presentationGrade"><option>1 клас</option><option>2 клас</option><option selected>3 клас</option><option>4 клас</option><option>5 клас</option></select>
+      <label>Текст слайдів</label><textarea id="presentationSlides" rows="8" placeholder="Слайд 1&#10;Colours&#10;&#10;---&#10;Слайд 2&#10;Red — червоний&#10;Blue — синій"></textarea>
+      <div class="quick-actions"><button class="btn" id="savePresentation">Зберегти презентацію</button><button class="btn secondary" id="cancelPresentationEdit" style="display:none">Скасувати</button></div>
+      <span id="presentationMsg" class="feedback"></span>
+    </div>
+    <h3 class="list-heading">Мої презентації</h3><div id="presentationList" class="managed-list"></div>
+  </section>
+  <section class="teacher-pane" id="teacher-schedule">
+    <h2>Календар і розклад</h2><p class="muted">Додавай заняття, час і нотатки. Усі записи можна видаляти.</p>
+    <div class="panel">
+      <label>Дата</label><input id="eventDate" type="date">
+      <label>Час</label><input id="eventTime" type="time">
+      <label>Назва заняття</label><input id="eventTitle" placeholder="Наприклад: Англійська — 3 клас">
+      <label>Нотатки</label><textarea id="eventNotes" rows="2" placeholder="Тема, домашнє завдання..."></textarea>
+      <button class="btn" id="addEvent">Додати до розкладу</button><span id="scheduleMsg" class="feedback"></span>
+    </div>
+    <h3 class="list-heading">Майбутні заняття</h3><div id="scheduleList" class="managed-list"></div>
+  </section>
+  <section class="teacher-pane" id="teacher-materials">
+    <h2>Робочі матеріали</h2><p class="muted">Створюй завдання та роздруковуй їх для учнів.</p>
+    <div class="panel">
+      <input type="hidden" id="editingMaterialId">
+      <label>Назва матеріалу</label><input id="materialTitle" placeholder="Наприклад: My Family — worksheet">
+      <label>Інструкція та завдання</label><textarea id="materialBody" rows="7" placeholder="1. Match the words&#10;2. Translate the sentences&#10;3. Write five words"></textarea>
+      <div class="quick-actions"><button class="btn" id="saveMaterial">Зберегти матеріал</button><button class="btn secondary" id="cancelMaterialEdit" style="display:none">Скасувати</button></div>
+      <span id="materialMsg" class="feedback"></span>
+    </div>
+    <h3 class="list-heading">Мої матеріали</h3><div id="materialList" class="managed-list"></div>
+  </section>
+  <div class="modal" id="presentationPreview"><div class="modalbox presentation-preview">
+    <div class="preview-top"><span id="previewCounter">Слайд 1</span><button class="btn secondary small" id="closePreview">Закрити</button></div>
+    <div id="previewSlide" class="preview-slide"></div>
+    <div class="quick-actions"><button class="btn secondary" id="prevSlide">← Назад</button><button class="btn" id="nextSlide">Далі →</button><button class="btn secondary" id="printSlides">Друк</button></div>
+  </div></div>
 </section>
+
 </main>
 <footer>English Kids · Навчання з цікавістю 💙<br><span id="connectionStatus">Підключення до захищеного кабінету…</span></footer>
 
@@ -137,6 +225,7 @@ let currentGrade=3,currentLesson=null,correctCount=0,quizCount=0;
 let user=JSON.parse(localStorage.getItem("ek_user")||"null");
 let progress=JSON.parse(localStorage.getItem("ek_progress")||"{}");
 let custom=JSON.parse(localStorage.getItem("ek_custom")||"[]");
+custom.forEach((item,index)=>{if(!item.id)item.id="legacy-"+index+"-"+Date.now()});localStorage.setItem("ek_custom",JSON.stringify(custom));
 function show(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});}
 function updateUser(){document.getElementById("studentBadge").textContent=user?("👋 "+user.name):"Гість";document.getElementById("loginBtn").textContent=user?"Змінити учня":"Вхід учня";}
 function renderGrades(){let el=document.getElementById("grades");el.innerHTML="";for(let n=1;n<=5;n++){let done=Object.keys(progress).filter(k=>k.startsWith(n+"-")).length;let b=document.createElement("button");b.className="grade";b.innerHTML=`<div class="num">${n}</div><div class="label">КЛАС</div><small>${curriculum[n].lessons.length} теми · ${done} завершено</small><div class="progress"><span style="width:${done/curriculum[n].lessons.length*100}%"></span></div>`;b.onclick=()=>openGrade(n);el.appendChild(b);}}
@@ -149,6 +238,128 @@ window.setEnglishKidsUser=(u)=>{user=u;updateUser();};
 document.getElementById("cancelLogin").onclick=()=>document.getElementById("loginModal").classList.remove("show");
 document.getElementById("teacherBtn").onclick=()=>show("teacherView");
 document.getElementById("addLesson").onclick=()=>{let grade=+document.getElementById("newGrade").value,title=document.getElementById("newTitle").value.trim(),desc=document.getElementById("newDesc").value.trim(),raw=document.getElementById("newWords").value.trim();if(!title||!raw){document.getElementById("teacherMsg").textContent="Додай назву та хоча б одне слово.";return}let words=raw.split("\n").map(line=>{let parts=line.split("—");return[(parts[0]||"").trim(),(parts[1]||"").trim(),"💡"]}).filter(x=>x[0]&&x[1]);custom.push({grade,title,desc,words});localStorage.setItem("ek_custom",JSON.stringify(custom));document.getElementById("teacherMsg").textContent="Урок додано на цьому пристрої!";document.getElementById("newTitle").value="";document.getElementById("newDesc").value="";document.getElementById("newWords").value="";};
+
+// Teacher workspace: single-teacher local version. Supabase persistence will be added in the next stage.
+const ekRead=(key)=>{try{return JSON.parse(localStorage.getItem(key)||"[]")}catch{return []}};
+const ekWrite=(key,value)=>localStorage.setItem(key,JSON.stringify(value));
+let presentations=ekRead("ek_presentations"), events=ekRead("ek_schedule"), materials=ekRead("ek_materials");
+let previewSlides=[],previewIndex=0;
+function teacherTab(name){
+ document.querySelectorAll(".teacher-tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
+ document.querySelectorAll(".teacher-pane").forEach(p=>p.classList.toggle("active",p.id==="teacher-"+name));
+ refreshTeacher();
+}
+document.querySelectorAll(".teacher-tab").forEach(b=>b.addEventListener("click",()=>teacherTab(b.dataset.tab)));
+document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>teacherTab(b.dataset.goto)));
+function escHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function itemActions(type,id,extra=""){
+ const edit=type==="lesson"?"Редагувати":type==="presentation"?"Редагувати":"Редагувати";
+ return `<div class="managed-actions">${extra}<button data-edit="${type}" data-id="${id}">${edit}</button><button class="danger" data-delete="${type}" data-id="${id}">Видалити</button></div>`;
+}
+function renderManaged(){
+ const ll=document.getElementById("teacherLessonList");
+ ll.innerHTML=custom.length?custom.map(x=>`<article class="managed-item"><div><h4>${escHtml(x.title)} · ${x.grade} клас</h4><p>${escHtml(x.desc)} · ${x.words.length} слів</p></div>${itemActions("lesson",x.id)}</article>`).join(""):'<div class="empty-state">Ти ще не створив уроків. Додай перший вище.</div>';
+ const pl=document.getElementById("presentationList");
+ pl.innerHTML=presentations.length?presentations.map(x=>`<article class="managed-item"><div><h4>${escHtml(x.title)}</h4><p>${escHtml(x.grade)} · ${x.slides.length} слайдів</p></div>${itemActions("presentation",x.id,`<button data-preview="${x.id}">Переглянути</button>`)}</article>`).join(""):'<div class="empty-state">Презентацій поки немає. Створи першу вище.</div>';
+ const sl=document.getElementById("scheduleList");
+ const sorted=[...events].sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+ sl.innerHTML=sorted.length?sorted.map(x=>`<article class="managed-item"><div><h4>${escHtml(x.title)}</h4><p>${escHtml(x.date)} · ${escHtml(x.time||"Час не вказано")} ${x.notes?"· "+escHtml(x.notes):""}</p></div><div class="managed-actions"><button class="danger" data-delete="event" data-id="${x.id}">Видалити</button></div></article>`).join(""):'<div class="empty-state">У розкладі поки немає занять.</div>';
+ const ml=document.getElementById("materialList");
+ ml.innerHTML=materials.length?materials.map(x=>`<article class="managed-item"><div><h4>${escHtml(x.title)}</h4><p>${escHtml(x.body.slice(0,140))}</p></div>${itemActions("material",x.id,`<button data-print-material="${x.id}">Друк</button>`)}</article>`).join(""):'<div class="empty-state">Матеріалів поки немає.</div>';
+ document.getElementById("statLessons").textContent=custom.length;
+ document.getElementById("statPresentations").textContent=presentations.length;
+ document.getElementById("statEvents").textContent=events.length;
+ document.getElementById("statMaterials").textContent=materials.length;
+}
+function refreshTeacher(){renderManaged();}
+function wordsFromText(raw){return raw.split("\n").map(line=>{let p=line.split("—");return[(p[0]||"").trim(),(p[1]||"").trim(),"💡"]}).filter(x=>x[0]&&x[1]);}
+function resetLessonForm(){["editingLessonId","newTitle","newDesc","newWords"].forEach(id=>document.getElementById(id).value="");document.getElementById("lessonFormHeading").textContent="Додати власний урок";document.getElementById("addLesson").textContent="Зберегти урок";document.getElementById("cancelLessonEdit").style.display="none";}
+document.getElementById("addLesson").onclick=()=>{
+ const id=document.getElementById("editingLessonId").value,grade=+document.getElementById("newGrade").value,title=document.getElementById("newTitle").value.trim(),desc=document.getElementById("newDesc").value.trim(),words=wordsFromText(document.getElementById("newWords").value.trim());
+ if(!title||!words.length){document.getElementById("teacherMsg").textContent="Вкажи назву та щонайменше одне слово у форматі English — переклад.";return}
+ if(id){const x=custom.find(v=>v.id===id);if(x)Object.assign(x,{grade,title,desc,words});}
+ else custom.push({id:"l"+Date.now(),grade,title,desc,words});
+ ekWrite("ek_custom",custom);document.getElementById("teacherMsg").textContent=id?"Зміни уроку збережено.":"Урок додано до списку.";
+ resetLessonForm();renderManaged();renderGrades();
+};
+document.getElementById("cancelLessonEdit").onclick=resetLessonForm;
+function resetPresentationForm(){["editingPresentationId","presentationTitle","presentationSlides"].forEach(id=>document.getElementById(id).value="");document.getElementById("savePresentation").textContent="Зберегти презентацію";document.getElementById("cancelPresentationEdit").style.display="none";}
+document.getElementById("savePresentation").onclick=()=>{
+ const id=document.getElementById("editingPresentationId").value,title=document.getElementById("presentationTitle").value.trim(),grade=document.getElementById("presentationGrade").value,raw=document.getElementById("presentationSlides").value.trim(),slides=raw.split(/\n\s*---\s*\n/).map(x=>x.trim()).filter(Boolean);
+ if(!title||!slides.length){document.getElementById("presentationMsg").textContent="Додай назву та текст хоча б одного слайда.";return}
+ if(id){const x=presentations.find(v=>v.id===id);if(x)Object.assign(x,{title,grade,slides});}
+ else presentations.push({id:"p"+Date.now(),title,grade,slides});
+ ekWrite("ek_presentations",presentations);document.getElementById("presentationMsg").textContent="Презентацію збережено.";resetPresentationForm();renderManaged();
+};
+document.getElementById("cancelPresentationEdit").onclick=resetPresentationForm;
+document.getElementById("addEvent").onclick=()=>{
+ const date=document.getElementById("eventDate").value,time=document.getElementById("eventTime").value,title=document.getElementById("eventTitle").value.trim(),notes=document.getElementById("eventNotes").value.trim();
+ if(!date||!title){document.getElementById("scheduleMsg").textContent="Вкажи дату та назву заняття.";return}
+ events.push({id:"e"+Date.now(),date,time,title,notes});ekWrite("ek_schedule",events);
+ ["eventDate","eventTime","eventTitle","eventNotes"].forEach(id=>document.getElementById(id).value="");
+ document.getElementById("scheduleMsg").textContent="Заняття додано до розкладу.";renderManaged();
+};
+function resetMaterialForm(){["editingMaterialId","materialTitle","materialBody"].forEach(id=>document.getElementById(id).value="");document.getElementById("saveMaterial").textContent="Зберегти матеріал";document.getElementById("cancelMaterialEdit").style.display="none";}
+document.getElementById("saveMaterial").onclick=()=>{
+ const id=document.getElementById("editingMaterialId").value,title=document.getElementById("materialTitle").value.trim(),body=document.getElementById("materialBody").value.trim();
+ if(!title||!body){document.getElementById("materialMsg").textContent="Додай назву та текст завдання.";return}
+ if(id){const x=materials.find(v=>v.id===id);if(x)Object.assign(x,{title,body});}
+ else materials.push({id:"m"+Date.now(),title,body});
+ ekWrite("ek_materials",materials);document.getElementById("materialMsg").textContent="Матеріал збережено.";resetMaterialForm();renderManaged();
+};
+document.getElementById("cancelMaterialEdit").onclick=resetMaterialForm;
+document.addEventListener("click",e=>{
+ const b=e.target.closest("button");if(!b)return;const id=b.dataset.id;
+ if(b.dataset.delete){
+  if(!confirm("Точно видалити цей матеріал?"))return;
+  const t=b.dataset.delete;
+  if(t==="lesson"){custom=custom.filter(x=>x.id!==id);ekWrite("ek_custom",custom);renderGrades();}
+  if(t==="presentation"){presentations=presentations.filter(x=>x.id!==id);ekWrite("ek_presentations",presentations);}
+  if(t==="event"){events=events.filter(x=>x.id!==id);ekWrite("ek_schedule",events);}
+  if(t==="material"){materials=materials.filter(x=>x.id!==id);ekWrite("ek_materials",materials);}
+  renderManaged();
+ }
+ if(b.dataset.edit==="lesson"){
+  const x=custom.find(v=>v.id===id);if(!x)return;
+  document.getElementById("editingLessonId").value=x.id;document.getElementById("newGrade").value=x.grade;
+  document.getElementById("newTitle").value=x.title;document.getElementById("newDesc").value=x.desc;
+  document.getElementById("newWords").value=x.words.map(w=>w[0]+" — "+w[1]).join("\n");
+  document.getElementById("lessonFormHeading").textContent="Редагувати урок";document.getElementById("addLesson").textContent="Зберегти зміни";document.getElementById("cancelLessonEdit").style.display="inline-block";
+  teacherTab("lessons");document.getElementById("newTitle").focus();
+ }
+ if(b.dataset.edit==="presentation"){
+  const x=presentations.find(v=>v.id===id);if(!x)return;
+  document.getElementById("editingPresentationId").value=x.id;document.getElementById("presentationTitle").value=x.title;
+  document.getElementById("presentationGrade").value=x.grade;document.getElementById("presentationSlides").value=x.slides.join("\n\n---\n\n");
+  document.getElementById("savePresentation").textContent="Зберегти зміни";document.getElementById("cancelPresentationEdit").style.display="inline-block";teacherTab("presentations");
+ }
+ if(b.dataset.edit==="material"){
+  const x=materials.find(v=>v.id===id);if(!x)return;
+  document.getElementById("editingMaterialId").value=x.id;document.getElementById("materialTitle").value=x.title;document.getElementById("materialBody").value=x.body;
+  document.getElementById("saveMaterial").textContent="Зберегти зміни";document.getElementById("cancelMaterialEdit").style.display="inline-block";teacherTab("materials");
+ }
+ if(b.dataset.preview){const x=presentations.find(v=>v.id===b.dataset.preview);if(x){previewSlides=x.slides;previewIndex=0;showPreview();}}
+ if(b.dataset.printMaterial){const x=materials.find(v=>v.id===b.dataset.printMaterial);if(x)printDocument(x.title,x.body);}
+});
+function showPreview(){document.getElementById("previewSlide").textContent=previewSlides[previewIndex];document.getElementById("previewCounter").textContent=`Слайд ${previewIndex+1} з ${previewSlides.length}`;document.getElementById("presentationPreview").classList.add("show");}
+document.getElementById("closePreview").onclick=()=>document.getElementById("presentationPreview").classList.remove("show");
+document.getElementById("prevSlide").onclick=()=>{previewIndex=Math.max(0,previewIndex-1);showPreview()};
+document.getElementById("nextSlide").onclick=()=>{previewIndex=Math.min(previewSlides.length-1,previewIndex+1);showPreview()};
+document.getElementById("printSlides").onclick=()=>printDocument("Презентація",previewSlides.join("\n\n──────────\n\n"));
+function printDocument(title,body){
+ const w=window.open("","_blank");if(!w){alert("Дозволь спливаюче вікно для друку.");return}
+ w.document.write(`<!doctype html><html lang="uk"><meta charset="utf-8"><title>${escHtml(title)}</title><style>body{font:18px/1.6 Arial,sans-serif;max-width:850px;margin:40px auto;padding:20px;color:#20304d}h1{font-size:28px}pre{white-space:pre-wrap;font:inherit}</style><h1>${escHtml(title)}</h1><pre>${escHtml(body)}</pre><script>window.onload=()=>window.print()<\/script></html>`);w.document.close();
+}
+function openGrade(n){
+ currentGrade=n;document.getElementById("gradeEyebrow").textContent=n+" КЛАС";document.getElementById("gradeTitle").textContent=n+" клас";document.getElementById("gradeDesc").textContent=curriculum[n].desc;
+ let list=document.getElementById("lessons");list.innerHTML="";
+ let all=[...curriculum[n].lessons,...custom.filter(x=>x.grade===n).map(x=>[x.title,x.desc,x.words])];
+ all.forEach((l,i)=>{let key=n+"-"+i,done=progress[key],b=document.createElement("button");b.className="lesson";b.innerHTML=`<div class="lessonicon">${["📘","🧩","🌈","🦊"][i%4]}</div><div style="flex:1"><strong>${escHtml(l[0])}</strong><small>${escHtml(l[1])}</small></div><span>${done?"⭐":"→"}</span>`;b.onclick=()=>openLesson(n,i,l);list.appendChild(b)});
+ show("gradeView");
+}
+document.getElementById("teacherBtn").onclick=()=>{teacherTab("dashboard");show("teacherView");};
+renderManaged();
+
 updateUser();renderGrades();
 </script>
 <script type="module" src="./english-kids-connected/auth.js"></script>
