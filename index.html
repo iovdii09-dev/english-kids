@@ -43,6 +43,19 @@ footer{text-align:center;color:#8a97a8;font-size:12px;padding:25px}
 .managed-actions button{padding:8px 10px;border-radius:10px;background:#edf4fc;color:var(--ink);font-weight:750}
 .managed-actions .danger{background:#fff0f0;color:#b42318}
 .empty-state{background:#fff;border:1px dashed #cbd5e1;border-radius:16px;padding:20px;color:var(--muted);text-align:center}
+
+.presentation-builder{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.builder-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
+.slide-editor{border:1px solid var(--line);border-radius:15px;padding:13px;margin:10px 0;background:#fbfcff}
+.slide-editor-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.slide-editor textarea{min-height:88px}
+.ai-panel{background:linear-gradient(120deg,#edf6ff,#f4efff);border:1px solid #dce8fa;border-radius:20px;padding:18px;margin:14px 0}
+.ai-panel .ai-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ai-panel .ai-fields label{margin-top:6px}
+.preview-slide h2{font-size:clamp(28px,5vw,46px);margin:0 0 16px}
+.preview-slide .slide-body{font-size:clamp(20px,3vw,30px);font-weight:650;white-space:pre-wrap}
+.preview-slide .slide-emoji{font-size:60px;margin-bottom:12px}
+@media(max-width:750px){.presentation-builder{grid-template-columns:1fr}.ai-panel .ai-fields{grid-template-columns:1fr}}
 .presentation-preview{max-width:760px}.preview-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .preview-slide{min-height:300px;background:linear-gradient(135deg,#eaf4ff,#f4efff,#fff5dc);border-radius:20px;padding:35px;display:flex;flex-direction:column;justify-content:center;white-space:pre-wrap;font-size:clamp(22px,4vw,34px);font-weight:800;line-height:1.45}
 @media(max-width:650px){.teacher-stats{grid-template-columns:repeat(2,1fr)}.managed-item{align-items:flex-start;flex-direction:column}.managed-actions{width:100%}.managed-actions button{flex:1}}
@@ -132,14 +145,36 @@ footer{text-align:center;color:#8a97a8;font-size:12px;padding:25px}
     <h3 class="list-heading">Створені уроки</h3><div id="teacherLessonList" class="managed-list"></div>
   </section>
   <section class="teacher-pane" id="teacher-presentations">
-    <h2>Конструктор презентацій</h2><p class="muted">Створи презентацію з окремих слайдів. Розділяй слайди трьома дефісами ---</p>
-    <div class="panel">
-      <input type="hidden" id="editingPresentationId">
-      <label>Назва презентації</label><input id="presentationTitle" placeholder="Наприклад: Colours">
-      <label>Для якого класу</label><select id="presentationGrade"><option>1 клас</option><option>2 клас</option><option selected>3 клас</option><option>4 клас</option><option>5 клас</option></select>
-      <label>Текст слайдів</label><textarea id="presentationSlides" rows="8" placeholder="Слайд 1&#10;Colours&#10;&#10;---&#10;Слайд 2&#10;Red — червоний&#10;Blue — синій"></textarea>
-      <div class="quick-actions"><button class="btn" id="savePresentation">Зберегти презентацію</button><button class="btn secondary" id="cancelPresentationEdit" style="display:none">Скасувати</button></div>
-      <span id="presentationMsg" class="feedback"></span>
+    <h2>Конструктор презентацій</h2><p class="muted">Створюй навчальні презентації за допомогою ІІ або збирай їх самостійно слайд за слайдом.</p>
+    <div class="ai-panel">
+      <div class="eyebrow">AI PRESENTATION MAKER</div><h3 style="margin:6px 0">✦ Створити презентацію з ІІ</h3>
+      <p class="muted">Вкажи тему — ІІ підготує структуру, пояснення, приклади та вправи для вибраного класу.</p>
+      <div class="ai-fields">
+        <div><label>Тема презентації</label><input id="aiPresentationTopic" placeholder="Наприклад: My Family"></div>
+        <div><label>Клас</label><select id="aiPresentationGrade"><option>1 клас</option><option>2 клас</option><option selected>3 клас</option><option>4 клас</option><option>5 клас</option></select></div>
+        <div><label>Мова пояснень</label><select id="aiPresentationLanguage"><option value="uk">Українська</option><option value="ro">Română</option><option value="en">English</option></select></div>
+        <div><label>Кількість слайдів</label><select id="aiPresentationCount"><option>5</option><option selected>8</option><option>10</option><option>12</option></select></div>
+      </div>
+      <div class="quick-actions"><button class="btn" id="generatePresentation">✦ Згенерувати презентацію</button></div>
+      <span id="aiPresentationMsg" class="feedback" aria-live="polite"></span>
+    </div>
+    <div class="presentation-builder">
+      <div class="builder-panel">
+        <h3>✏️ Ручне редагування</h3>
+        <input type="hidden" id="editingPresentationId">
+        <label>Назва презентації</label><input id="presentationTitle" placeholder="Наприклад: Colours">
+        <label>Для якого класу</label><select id="presentationGrade"><option>1 клас</option><option>2 клас</option><option selected>3 клас</option><option>4 клас</option><option>5 клас</option></select>
+        <div class="quick-actions"><button class="btn secondary small" id="addPresentationSlide">＋ Додати слайд</button></div>
+        <div id="presentationSlideEditors"></div>
+        <div class="quick-actions"><button class="btn" id="savePresentation">Зберегти презентацію</button><button class="btn secondary" id="cancelPresentationEdit" style="display:none">Скасувати</button></div>
+        <span id="presentationMsg" class="feedback" aria-live="polite"></span>
+      </div>
+      <div class="builder-panel">
+        <h3>Як працюватиме редактор</h3>
+        <p class="muted">Кожен слайд можна редагувати окремо: змінювати заголовок, текст та іконку. Додавай нові слайди або видаляй непотрібні.</p>
+        <div class="panel" style="box-shadow:none;background:#f5f8ff"><div style="font-size:44px">🌈</div><h2>My Family</h2><p class="muted">mother — мама<br>father — тато<br>sister — сестра</p></div>
+        <p class="notice">Під час показу презентації доступний повноекранний перегляд і друк у PDF через меню друку браузера.</p>
+      </div>
     </div>
     <h3 class="list-heading">Мої презентації</h3><div id="presentationList" class="managed-list"></div>
   </section>
@@ -283,15 +318,66 @@ document.getElementById("addLesson").onclick=()=>{
  resetLessonForm();renderManaged();renderGrades();
 };
 document.getElementById("cancelLessonEdit").onclick=resetLessonForm;
-function resetPresentationForm(){["editingPresentationId","presentationTitle","presentationSlides"].forEach(id=>document.getElementById(id).value="");document.getElementById("savePresentation").textContent="Зберегти презентацію";document.getElementById("cancelPresentationEdit").style.display="none";}
+let presentationDraft=[{title:"",body:"",emoji:"📘"}];
+function normalizeSlides(slides){
+ return (slides||[]).map((x,i)=>typeof x==="string"?{title:"Слайд "+(i+1),body:x,emoji:"📘"}:{title:x.title||("Слайд "+(i+1)),body:x.body||"",emoji:x.emoji||"📘"});
+}
+function renderSlideEditors(){
+ const host=document.getElementById("presentationSlideEditors");
+ host.innerHTML=presentationDraft.map((sl,i)=>`<div class="slide-editor" data-slide-index="${i}">
+  <div class="slide-editor-head"><strong>Слайд ${i+1}</strong><button type="button" class="danger" data-remove-slide="${i}" style="background:#fff0f0;color:#b42318;border-radius:9px;padding:7px 10px" ${presentationDraft.length===1?"disabled":""}>Видалити</button></div>
+  <label>Заголовок</label><input data-slide-title="${i}" value="${escHtml(sl.title)}" placeholder="Заголовок слайда">
+  <label>Іконка / емодзі</label><input data-slide-emoji="${i}" value="${escHtml(sl.emoji)}" maxlength="8">
+  <label>Текст слайда</label><textarea data-slide-body="${i}" rows="4" placeholder="Текст, слова, приклади або завдання">${escHtml(sl.body)}</textarea>
+ </div>`).join("");
+}
+function readSlideEditors(){
+ presentationDraft=presentationDraft.map((sl,i)=>({
+  title:document.querySelector(`[data-slide-title="${i}"]`)?.value||"",
+  emoji:document.querySelector(`[data-slide-emoji="${i}"]`)?.value||"📘",
+  body:document.querySelector(`[data-slide-body="${i}"]`)?.value||""
+ }));
+}
+document.getElementById("addPresentationSlide").onclick=()=>{readSlideEditors();presentationDraft.push({title:"",body:"",emoji:"📘"});renderSlideEditors();};
+document.getElementById("presentationSlideEditors").addEventListener("click",e=>{
+ const b=e.target.closest("[data-remove-slide]");if(!b)return;readSlideEditors();presentationDraft.splice(+b.dataset.removeSlide,1);renderSlideEditors();
+});
+function resetPresentationForm(){
+ document.getElementById("editingPresentationId").value="";
+ document.getElementById("presentationTitle").value="";
+ presentationDraft=[{title:"",body:"",emoji:"📘"}];renderSlideEditors();
+ document.getElementById("savePresentation").textContent="Зберегти презентацію";
+ document.getElementById("cancelPresentationEdit").style.display="none";
+}
 document.getElementById("savePresentation").onclick=()=>{
- const id=document.getElementById("editingPresentationId").value,title=document.getElementById("presentationTitle").value.trim(),grade=document.getElementById("presentationGrade").value,raw=document.getElementById("presentationSlides").value.trim(),slides=raw.split(/\n\s*---\s*\n/).map(x=>x.trim()).filter(Boolean);
- if(!title||!slides.length){document.getElementById("presentationMsg").textContent="Додай назву та текст хоча б одного слайда.";return}
+ readSlideEditors();
+ const id=document.getElementById("editingPresentationId").value,title=document.getElementById("presentationTitle").value.trim(),grade=document.getElementById("presentationGrade").value;
+ const slides=presentationDraft.map(x=>({title:x.title.trim(),body:x.body.trim(),emoji:x.emoji.trim()||"📘"})).filter(x=>x.title||x.body);
+ if(!title||!slides.length){document.getElementById("presentationMsg").textContent="Додай назву та щонайменше один слайд.";return}
  if(id){const x=presentations.find(v=>v.id===id);if(x)Object.assign(x,{title,grade,slides});}
  else presentations.push({id:"p"+Date.now(),title,grade,slides});
  ekWrite("ek_presentations",presentations);document.getElementById("presentationMsg").textContent="Презентацію збережено.";resetPresentationForm();renderManaged();
 };
 document.getElementById("cancelPresentationEdit").onclick=resetPresentationForm;
+document.getElementById("generatePresentation").onclick=async()=>{
+ const topic=document.getElementById("aiPresentationTopic").value.trim(),grade=document.getElementById("aiPresentationGrade").value;
+ const msg=document.getElementById("aiPresentationMsg"),btn=document.getElementById("generatePresentation");
+ if(!topic){msg.textContent="Спочатку введи тему презентації.";return}
+ if(typeof window.englishKidsGeneratePresentation!=="function"){msg.textContent="ІІ ще не підключено. Потрібно налаштувати Supabase Edge Function generate-presentation.";return}
+ btn.disabled=true;msg.textContent="ІІ готує презентацію. Це може зайняти до хвилини…";
+ try{
+  const result=await window.englishKidsGeneratePresentation({topic,grade,language:document.getElementById("aiPresentationLanguage").value,count:+document.getElementById("aiPresentationCount").value});
+  if(!result?.slides?.length)throw new Error("ІІ не повернув слайди. Спробуй ще раз.");
+  document.getElementById("presentationTitle").value=result.title||topic;
+  document.getElementById("presentationGrade").value=grade;
+  document.getElementById("editingPresentationId").value="";
+  presentationDraft=normalizeSlides(result.slides);renderSlideEditors();
+  msg.textContent="Готово! Перевір і за потреби відредагуй слайди, а потім натисни «Зберегти презентацію».";
+  document.getElementById("presentationTitle").scrollIntoView({behavior:"smooth",block:"center"});
+ }catch(e){msg.textContent="Не вдалося створити презентацію: "+(e.message||"помилка сервера");}
+ finally{btn.disabled=false;}
+};
+renderSlideEditors();
 document.getElementById("addEvent").onclick=()=>{
  const date=document.getElementById("eventDate").value,time=document.getElementById("eventTime").value,title=document.getElementById("eventTitle").value.trim(),notes=document.getElementById("eventNotes").value.trim();
  if(!date||!title){document.getElementById("scheduleMsg").textContent="Вкажи дату та назву заняття.";return}
@@ -330,7 +416,7 @@ document.addEventListener("click",e=>{
  if(b.dataset.edit==="presentation"){
   const x=presentations.find(v=>v.id===id);if(!x)return;
   document.getElementById("editingPresentationId").value=x.id;document.getElementById("presentationTitle").value=x.title;
-  document.getElementById("presentationGrade").value=x.grade;document.getElementById("presentationSlides").value=x.slides.join("\n\n---\n\n");
+  document.getElementById("presentationGrade").value=x.grade;presentationDraft=normalizeSlides(x.slides);renderSlideEditors();
   document.getElementById("savePresentation").textContent="Зберегти зміни";document.getElementById("cancelPresentationEdit").style.display="inline-block";teacherTab("presentations");
  }
  if(b.dataset.edit==="material"){
@@ -338,14 +424,19 @@ document.addEventListener("click",e=>{
   document.getElementById("editingMaterialId").value=x.id;document.getElementById("materialTitle").value=x.title;document.getElementById("materialBody").value=x.body;
   document.getElementById("saveMaterial").textContent="Зберегти зміни";document.getElementById("cancelMaterialEdit").style.display="inline-block";teacherTab("materials");
  }
- if(b.dataset.preview){const x=presentations.find(v=>v.id===b.dataset.preview);if(x){previewSlides=x.slides;previewIndex=0;showPreview();}}
+ if(b.dataset.preview){const x=presentations.find(v=>v.id===b.dataset.preview);if(x){previewSlides=normalizeSlides(x.slides);previewIndex=0;showPreview();}}
  if(b.dataset.printMaterial){const x=materials.find(v=>v.id===b.dataset.printMaterial);if(x)printDocument(x.title,x.body);}
 });
-function showPreview(){document.getElementById("previewSlide").textContent=previewSlides[previewIndex];document.getElementById("previewCounter").textContent=`Слайд ${previewIndex+1} з ${previewSlides.length}`;document.getElementById("presentationPreview").classList.add("show");}
+function showPreview(){
+ const sl=previewSlides[previewIndex]||{title:"",body:"",emoji:"📘"};
+ document.getElementById("previewSlide").innerHTML=`<div class="slide-emoji">${escHtml(sl.emoji||"📘")}</div><h2>${escHtml(sl.title||"")}</h2><div class="slide-body">${escHtml(sl.body||"").replace(/\n/g,"<br>")}</div>`;
+ document.getElementById("previewCounter").textContent=`Слайд ${previewIndex+1} з ${previewSlides.length}`;
+ document.getElementById("presentationPreview").classList.add("show");
+}
 document.getElementById("closePreview").onclick=()=>document.getElementById("presentationPreview").classList.remove("show");
 document.getElementById("prevSlide").onclick=()=>{previewIndex=Math.max(0,previewIndex-1);showPreview()};
 document.getElementById("nextSlide").onclick=()=>{previewIndex=Math.min(previewSlides.length-1,previewIndex+1);showPreview()};
-document.getElementById("printSlides").onclick=()=>printDocument("Презентація",previewSlides.join("\n\n──────────\n\n"));
+document.getElementById("printSlides").onclick=()=>printDocument("Презентація",previewSlides.map((x,i)=>`${i+1}. ${x.title}\n${x.body}`).join("\n\n──────────\n\n"));
 function printDocument(title,body){
  const w=window.open("","_blank");if(!w){alert("Дозволь спливаюче вікно для друку.");return}
  w.document.write(`<!doctype html><html lang="uk"><meta charset="utf-8"><title>${escHtml(title)}</title><style>body{font:18px/1.6 Arial,sans-serif;max-width:850px;margin:40px auto;padding:20px;color:#20304d}h1{font-size:28px}pre{white-space:pre-wrap;font:inherit}</style><h1>${escHtml(title)}</h1><pre>${escHtml(body)}</pre><script>window.onload=()=>window.print()<\/script></html>`);w.document.close();
