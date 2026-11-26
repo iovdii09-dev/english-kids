@@ -151,5 +151,5 @@ document.getElementById("teacherBtn").onclick=()=>show("teacherView");
 document.getElementById("addLesson").onclick=()=>{let grade=+document.getElementById("newGrade").value,title=document.getElementById("newTitle").value.trim(),desc=document.getElementById("newDesc").value.trim(),raw=document.getElementById("newWords").value.trim();if(!title||!raw){document.getElementById("teacherMsg").textContent="Додай назву та хоча б одне слово.";return}let words=raw.split("\n").map(line=>{let parts=line.split("—");return[(parts[0]||"").trim(),(parts[1]||"").trim(),"💡"]}).filter(x=>x[0]&&x[1]);custom.push({grade,title,desc,words});localStorage.setItem("ek_custom",JSON.stringify(custom));document.getElementById("teacherMsg").textContent="Урок додано на цьому пристрої!";document.getElementById("newTitle").value="";document.getElementById("newDesc").value="";document.getElementById("newWords").value="";};
 updateUser();renderGrades();
 </script>
-<script type="module" src="./auth.js"></script>
+<script type="module" src="./english-kids-connected/auth.js"></script>
 </body></html>
